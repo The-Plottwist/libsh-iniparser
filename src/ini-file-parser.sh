@@ -38,11 +38,10 @@ function in_array()
     local haystack="${1}[@]"
     local needle=${2}
 
-    for i in ${!haystack}; do
-        if [[ ${i} == "${needle}" ]]; then
-            return 0
-        fi
-    done
+    if echo "${!haystack}" | grep -q -w "${needle}"; then
+        return 0
+    fi
+
     return 1
 }
 
