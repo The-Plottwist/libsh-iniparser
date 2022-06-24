@@ -1,13 +1,59 @@
 #!/bin/bash
 
+
+# ---------------------------------------------------------------------------- #
+#                                  DISCLAIMER                                  #
+# ---------------------------------------------------------------------------- #
+
+# The original version of this file is published under MIT License.
+# And belongs to Wolf Software.
+# You can find that version here: https://github.com/DevelopersToolbox/ini-file-parser
+
+# However, concurrent with the MIT license, this is a modified version.
+# Belongs to Fatih Yeğin, and sublicensed under LGPL v3.
+
+# You should have received both licenses with the files.
+# If not, you can find bot licenses at the addresses below:
+# https://www.gnu.org/licenses/lgpl-3.0.en.html (LGPL v3)
+# https://github.com/DevelopersToolbox/ini-file-parser/blob/master/LICENSE.md (MIT)
+
+# Copyright (C) <2022> Fatih Yeğin
+# Mail: mail.fyegin@gmail.com
+
+
+# ---------------------------------------------------------------------------- #
+#                                CONFIGURATION                                 #
+# ---------------------------------------------------------------------------- #
+# To change the behaviour, uncomment & set below variables
+# accordingly in your executable.
+# Note: They are assumed "true" by default.
+
 # INI_IS_CASE_SENSITIVE_SECTIONS
 # INI_IS_CASE_SENSITIVE_KEYS
 # INI_IS_SHOW_WARNINGS
 # INI_IS_SHOW_ERRORS
 
-DEFAULT_SECTION='default'
+# ---------------------------------------------------------------------------- #
+#                                    USAGE                                     #
+# ---------------------------------------------------------------------------- #
 
+# This is a library file.
+# Do not execute this file directly.
+# Rather, include it in your executable script.
+# Ex: source PATH_TO_PARSER/ini_file_parser.sh
+
+
+# ---------------------------------------------------------------------------- #
+#                                   DEFAULTS                                   #
+# ---------------------------------------------------------------------------- #
+
+DEFAULT_SECTION='default'
 sections=( "${DEFAULT_SECTION}" )
+
+
+# ---------------------------------------------------------------------------- #
+#                                  FUNCTIONS                                   #
+# ---------------------------------------------------------------------------- #
 
 function ini_initialize_variables
 {
