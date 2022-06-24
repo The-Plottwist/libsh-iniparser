@@ -72,13 +72,13 @@ function process_section_name()
 {
     local section=$1
 
-    section="${section##*( )}"                                                     #Remove leading spaces
-    section="${section%%*( )}"                                                     #Remove trailing spaces
-    section=$(echo -e "${section}" | tr -s '[:punct:] [:blank:]' '_')              #Replace all :punct: and :blank: with underscore and squish
-    section=$(echo -e "${section}" | sed 's/[^a-zA-Z0-9_]//g')                     #Remove non-alphanumberics (except underscore)
+    section="${section##*( )}"                                          #Remove leading spaces
+    section="${section%%*( )}"                                          #Remove trailing spaces
+    section=$(echo -e "${section}" | tr -s '[:punct:] [:blank:]' '_')   #Replace all :punct: and :blank: with underscore and squish
+    section=$(echo -e "${section}" | sed 's/[^a-zA-Z0-9_]//g')          #Remove non-alphanumberics (except underscore)
 
     if [[ "${local_case_sensitive_sections}" = false ]]; then
-        section=$(echo -e "${section}" | tr '[:upper:]' '[:lower:]')               #Lowercase the section name
+        section=$(echo -e "${section}" | tr '[:upper:]' '[:lower:]')    #Lowercase the section name
     fi
     echo "${section}"
 }
@@ -87,13 +87,13 @@ function process_key_name()
 {
     local key=$1
 
-    key="${key##*( )}"                                                             #Remove leading spaces
-    key="${key%%*( )}"                                                             #Remove trailing spaces
-    key=$(echo -e "${key}" | tr -s '[:punct:] [:blank:]' '_')                      #Replace all :punct: and :blank: with underscore and squish
-    key=$(echo -e "${key}" | sed 's/[^a-zA-Z0-9_]//g')                             #Remove non-alphanumberics (except underscore)
+    key="${key##*( )}"                                                  #Remove leading spaces
+    key="${key%%*( )}"                                                  #Remove trailing spaces
+    key=$(echo -e "${key}" | tr -s '[:punct:] [:blank:]' '_')           #Replace all :punct: and :blank: with underscore and squish
+    key=$(echo -e "${key}" | sed 's/[^a-zA-Z0-9_]//g')                  #Remove non-alphanumberics (except underscore)
 
     if [[ "${local_case_sensitive_keys}" = false ]]; then
-        key=$(echo -e "${key}" | tr '[:upper:]' '[:lower:]')                       #Lowercase the section name
+        key=$(echo -e "${key}" | tr '[:upper:]' '[:lower:]')            #Lowercase the section name
     fi
     echo "${key}"
 }
@@ -102,10 +102,10 @@ function process_value()
 {
     local value=$1
 
-    value="${value%%\;*}"                                                          #Remove in line right comments
-    value="${value%%\#*}"                                                          #Remove in line right comments
-    value="${value##*( )}"                                                         #Remove leading spaces
-    value="${value%%*( )}"                                                         #Remove trailing spaces
+    value="${value%%\;*}"                                               #Remove in line right comments
+    value="${value%%\#*}"                                               #Remove in line right comments
+    value="${value##*( )}"                                              #Remove leading spaces
+    value="${value%%*( )}"                                              #Remove trailing spaces
 
     value=$(escape_string "$value")
 
@@ -141,19 +141,19 @@ function process_ini_file()
     while read -r line; do
         line_number=$((line_number+1))
 
-        if [[ $line =~ ^# || -z $line ]]; then                                 #Ignore comments / empty lines
+        if [[ $line =~ ^# || -z $line ]]; then                          #Ignore comments / empty lines
             continue;
         fi
 
-        if [[ $line =~ ^"["(.+)"]"$ ]]; then                                   #Match pattern for a 'section'
+        if [[ $line =~ ^"["(.+)"]"$ ]]; then                            #Match pattern for a 'section'
             section=$(process_section_name "${BASH_REMATCH[1]}")
 
             if ! in_array sections "${section}"; then
-                eval "${section}_keys=()"                                      #Use eval to declare the keys array
-                eval "${section}_values=()"                                    #Use eval to declare the values array
-                sections+=("${section}")                                       #Add the section name to the list
+                eval "${section}_keys=()"                               #Use eval to declare the keys array
+                eval "${section}_values=()"                             #Use eval to declare the values array
+                sections+=("${section}")                                #Add the section name to the list
             fi
-        elif [[ $line =~ ^(.*)"="(.*) ]]; then                                 #Match patter for a key=value pair
+        elif [[ $line =~ ^(.*)"="(.*) ]]; then                          #Match patter for a key=value pair
             key=$(process_key_name "${BASH_REMATCH[1]}")
             value=$(process_value "${BASH_REMATCH[2]}")
 
@@ -171,9 +171,9 @@ function process_ini_file()
                 if in_array "${key_array_name}" "${key}"; then
                     show_warning 'key %s - Defined multiple times within section %s\n' "${key}" "${section}"
                 fi
-                eval "${section}_keys+=(${key})"                               #Use eval to add to the keys array
-                eval "${section}_values+=('${value}')"                         #Use eval to add to the values array
-                eval "${section}_${key}='${value}'"                            #Use eval to declare a variable
+                eval "${section}_keys+=(${key})"                        #Use eval to add to the keys array
+                eval "${section}_values+=('${value}')"                  #Use eval to add to the values array
+                eval "${section}_${key}='${value}'"                     #Use eval to declare a variable
             fi
         fi
     done < "$1"
