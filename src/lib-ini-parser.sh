@@ -41,7 +41,7 @@
 # This is a library file.
 # Do not execute this file directly.
 # Rather, include it in your executable script.
-# Ex: source PATH_TO_PARSER/ini_file_parser.sh
+# Ex: source PATH_TO_PARSER/lib-ini-parser.sh
 
 
 # ---------------------------------------------------------------------------- #
