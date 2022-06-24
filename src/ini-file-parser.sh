@@ -33,6 +33,7 @@
 # INI_IS_SHOW_WARNINGS
 # INI_IS_SHOW_ERRORS
 
+
 # ---------------------------------------------------------------------------- #
 #                                    USAGE                                     #
 # ---------------------------------------------------------------------------- #
@@ -47,8 +48,8 @@
 #                                   DEFAULTS                                   #
 # ---------------------------------------------------------------------------- #
 
-DEFAULT_SECTION='default'
-sections=( "${DEFAULT_SECTION}" )
+INI_DEFAULT_SECTION='default'
+sections=( "${INI_DEFAULT_SECTION}" )
 
 
 # ---------------------------------------------------------------------------- #
@@ -108,7 +109,7 @@ function ini_show_error()
     fi
 }
 
-function ini_process_section_name()
+function ini_process_section()
 {
     local section=$1
 
@@ -123,7 +124,7 @@ function ini_process_section_name()
     echo "${section}"
 }
 
-function ini_process_key_name()
+function ini_process_key()
 {
     local key=$1
 
@@ -171,7 +172,7 @@ function ini_unescape_string()
 function ini_process_file()
 {
     local line_number=0
-    local section="${DEFAULT_SECTION}"
+    local section="${INI_DEFAULT_SECTION}"
     local key_array_name=''
 
     ini_initialize_variables
@@ -186,7 +187,7 @@ function ini_process_file()
         fi
 
         if [[ $line =~ ^"["(.+)"]"$ ]]; then                            #Match pattern for a 'section'
-            section=$(ini_process_section_name "${BASH_REMATCH[1]}")
+            section=$(ini_process_section "${BASH_REMATCH[1]}")
 
             if ! ini_in_array sections "${section}"; then
                 eval "${section}_keys=()"                               #Use eval to declare the keys array
@@ -194,7 +195,7 @@ function ini_process_file()
                 sections+=("${section}")                                #Add the section name to the list
             fi
         elif [[ $line =~ ^(.*)"="(.*) ]]; then                          #Match patter for a key=value pair
-            key=$(ini_process_key_name "${BASH_REMATCH[1]}")
+            key=$(ini_process_key "${BASH_REMATCH[1]}")
             value=$(ini_process_value "${BASH_REMATCH[2]}")
 
             if [[ -z ${key} ]]; then
@@ -202,8 +203,8 @@ function ini_process_file()
             elif [[ -z ${value} ]]; then
                 ini_show_error 'line %d: No value\n' "${line_number}"
             else
-                if [[ "${section}" == "${DEFAULT_SECTION}" ]]; then
-                    ini_show_warning '%s=%s - Defined on line %s before first section - added to "%s" group\n' "${key}" "${value}" "${line_number}" "${DEFAULT_SECTION}"
+                if [[ "${section}" == "${INI_DEFAULT_SECTION}" ]]; then
+                    ini_show_warning '%s=%s - Defined on line %s before first section - added to "%s" group\n' "${key}" "${value}" "${line_number}" "${INI_DEFAULT_SECTION}"
                 fi
 
                 eval key_array_name="${section}_keys"
@@ -227,8 +228,8 @@ function ini_get_value()
     local keys=''
     local values=''
 
-    section=$(ini_process_section_name "${1}")
-    key=$(ini_process_key_name "${2}")
+    section=$(ini_process_section "${1}")
+    key=$(ini_process_key "${2}")
 
     eval "keys=( \"\${${section}_keys[@]}\" )"
     eval "values=( \"\${${section}_values[@]}\" )"
