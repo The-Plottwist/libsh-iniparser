@@ -1,39 +1,34 @@
 #!/bin/bash
 
-declare case_sensitive_sections
-declare case_sensitive_keys
-declare show_config_warnings
-declare show_config_errors
+# INI_IS_CASE_SENSITIVE_SECTIONS
+# INI_IS_CASE_SENSITIVE_KEYS
+# INI_IS_SHOW_WARNINGS
+# INI_IS_SHOW_ERRORS
 
 DEFAULT_SECTION='default'
 
 sections=( "${DEFAULT_SECTION}" )
 
-local_case_sensitive_sections=true
-local_case_sensitive_keys=true
-local_show_config_warnings=true
-local_show_config_errors=true
-
-function setup_global_variables
+function ini_initialize_variables
 {
-    if [[ "${case_sensitive_sections}" = false || "${case_sensitive_sections}" = true ]]; then
-         local_case_sensitive_sections=$case_sensitive_sections
+    if ! [[ "${INI_IS_CASE_SENSITIVE_SECTIONS}" = false || "${INI_IS_CASE_SENSITIVE_SECTIONS}" = true ]]; then
+        INI_IS_CASE_SENSITIVE_SECTIONS=true
     fi
 
-    if [[ "${case_sensitive_keys}" = false || "${case_sensitive_keys}" = true ]]; then
-         local_case_sensitive_keys=$case_sensitive_keys
+    if ! [[ "${INI_IS_CASE_SENSITIVE_KEYS}" = false || "${INI_IS_CASE_SENSITIVE_KEYS}" = true ]]; then
+        INI_IS_CASE_SENSITIVE_KEYS=true
     fi
 
-    if [[ "${show_config_warnings}" = false || "${show_config_warnings}" = true ]]; then
-         local_show_config_warnings=$show_config_warnings
+    if ! [[ "${INI_IS_SHOW_WARNINGS}" = false || "${INI_IS_SHOW_WARNINGS}" = true ]]; then
+        INI_IS_SHOW_WARNINGS=true
     fi
 
-    if [[ "${show_config_errors}" = false || "${show_config_errors}" = true ]]; then
-         local_show_config_errors=$show_config_errors
+    if ! [[ "${INI_IS_SHOW_ERRORS}" = false || "${INI_IS_SHOW_ERRORS}" = true ]]; then
+        INI_IS_SHOW_ERRORS=true
     fi
 }
 
-function in_array()
+function ini_in_array()
 {
     local haystack="${1}[@]"
     local needle=${2}
@@ -45,9 +40,9 @@ function in_array()
     return 1
 }
 
-function show_warning()
+function ini_show_warning()
 {
-    if [[ "${local_show_config_warnings}" = true ]]; then
+    if [[ "${INI_IS_SHOW_WARNINGS}" = true ]]; then
         format=$1
         shift;
 
@@ -56,9 +51,9 @@ function show_warning()
     fi
 }
 
-function show_error()
+function ini_show_error()
 {
-    if [[ "${local_show_config_errors}" = true ]]; then
+    if [[ "${INI_IS_SHOW_ERRORS}" = true ]]; then
         format=$1
         shift;
 
@@ -67,7 +62,7 @@ function show_error()
     fi
 }
 
-function process_section_name()
+function ini_process_section_name()
 {
     local section=$1
 
@@ -76,13 +71,13 @@ function process_section_name()
     section=$(echo -e "${section}" | tr -s '[:punct:] [:blank:]' '_')   #Replace all :punct: and :blank: with underscore and squish
     section=$(echo -e "${section}" | sed 's/[^a-zA-Z0-9_]//g')          #Remove non-alphanumberics (except underscore)
 
-    if [[ "${local_case_sensitive_sections}" = false ]]; then
+    if [[ "${INI_IS_CASE_SENSITIVE_SECTIONS}" = false ]]; then
         section=$(echo -e "${section}" | tr '[:upper:]' '[:lower:]')    #Lowercase the section name
     fi
     echo "${section}"
 }
 
-function process_key_name()
+function ini_process_key_name()
 {
     local key=$1
 
@@ -91,13 +86,13 @@ function process_key_name()
     key=$(echo -e "${key}" | tr -s '[:punct:] [:blank:]' '_')           #Replace all :punct: and :blank: with underscore and squish
     key=$(echo -e "${key}" | sed 's/[^a-zA-Z0-9_]//g')                  #Remove non-alphanumberics (except underscore)
 
-    if [[ "${local_case_sensitive_keys}" = false ]]; then
+    if [[ "${INI_IS_CASE_SENSITIVE_KEYS}" = false ]]; then
         key=$(echo -e "${key}" | tr '[:upper:]' '[:lower:]')            #Lowercase the section name
     fi
     echo "${key}"
 }
 
-function process_value()
+function ini_process_value()
 {
     local value=$1
 
@@ -106,12 +101,12 @@ function process_value()
     value="${value##*( )}"                                              #Remove leading spaces
     value="${value%%*( )}"                                              #Remove trailing spaces
 
-    value=$(escape_string "$value")
+    value=$(ini_escape_string "$value")
 
     echo "${value}"
 }
 
-function escape_string()
+function ini_escape_string()
 {
     local clean
 
@@ -119,7 +114,7 @@ function escape_string()
     echo "${clean}"
 }
 
-function unescape_string()
+function ini_unescape_string()
 {
     local orig
 
@@ -127,13 +122,13 @@ function unescape_string()
     echo "${orig}"
 }
 
-function process_ini_file()
+function ini_process_file()
 {
     local line_number=0
     local section="${DEFAULT_SECTION}"
     local key_array_name=''
 
-    setup_global_variables
+    ini_initialize_variables
 
     shopt -s extglob
 
@@ -145,30 +140,30 @@ function process_ini_file()
         fi
 
         if [[ $line =~ ^"["(.+)"]"$ ]]; then                            #Match pattern for a 'section'
-            section=$(process_section_name "${BASH_REMATCH[1]}")
+            section=$(ini_process_section_name "${BASH_REMATCH[1]}")
 
-            if ! in_array sections "${section}"; then
+            if ! ini_in_array sections "${section}"; then
                 eval "${section}_keys=()"                               #Use eval to declare the keys array
                 eval "${section}_values=()"                             #Use eval to declare the values array
                 sections+=("${section}")                                #Add the section name to the list
             fi
         elif [[ $line =~ ^(.*)"="(.*) ]]; then                          #Match patter for a key=value pair
-            key=$(process_key_name "${BASH_REMATCH[1]}")
-            value=$(process_value "${BASH_REMATCH[2]}")
+            key=$(ini_process_key_name "${BASH_REMATCH[1]}")
+            value=$(ini_process_value "${BASH_REMATCH[2]}")
 
             if [[ -z ${key} ]]; then
-                show_error 'line %d: No key name\n' "${line_number}"
+                ini_show_error 'line %d: No key name\n' "${line_number}"
             elif [[ -z ${value} ]]; then
-                show_error 'line %d: No value\n' "${line_number}"
+                ini_show_error 'line %d: No value\n' "${line_number}"
             else
                 if [[ "${section}" == "${DEFAULT_SECTION}" ]]; then
-                    show_warning '%s=%s - Defined on line %s before first section - added to "%s" group\n' "${key}" "${value}" "${line_number}" "${DEFAULT_SECTION}"
+                    ini_show_warning '%s=%s - Defined on line %s before first section - added to "%s" group\n' "${key}" "${value}" "${line_number}" "${DEFAULT_SECTION}"
                 fi
 
                 eval key_array_name="${section}_keys"
 
-                if in_array "${key_array_name}" "${key}"; then
-                    show_warning 'key %s - Defined multiple times within section %s\n' "${key}" "${section}"
+                if ini_in_array "${key_array_name}" "${key}"; then
+                    ini_show_warning 'key %s - Defined multiple times within section %s\n' "${key}" "${section}"
                 fi
                 eval "${section}_keys+=(${key})"                        #Use eval to add to the keys array
                 eval "${section}_values+=('${value}')"                  #Use eval to add to the values array
@@ -178,7 +173,7 @@ function process_ini_file()
     done < "$1"
 }
 
-function get_value()
+function ini_get_value()
 {
     local section=''
     local key=''
@@ -186,21 +181,21 @@ function get_value()
     local keys=''
     local values=''
 
-    section=$(process_section_name "${1}")
-    key=$(process_key_name "${2}")
+    section=$(ini_process_section_name "${1}")
+    key=$(ini_process_key_name "${2}")
 
     eval "keys=( \"\${${section}_keys[@]}\" )"
     eval "values=( \"\${${section}_values[@]}\" )"
 
     for i in "${!keys[@]}"; do
         if [[ "${keys[$i]}" = "${key}" ]]; then
-            orig=$(unescape_string "${values[$i]}")
+            orig=$(ini_unescape_string "${values[$i]}")
             printf '%s' "${orig}"
         fi
     done
 }
 
-function display_config()
+function ini_display()
 {
     local section=''
     local key=''
@@ -215,14 +210,14 @@ function display_config()
         eval "values=( \"\${${section}_values[@]}\" )"
 
         for i in "${!keys[@]}"; do
-            orig=$(unescape_string "${values[$i]}")
+            orig=$(ini_unescape_string "${values[$i]}")
             printf '%s=%s\n' "${keys[$i]}" "${orig}"
         done
     printf '\n'
     done
 }
 
-function display_config_by_section()
+function ini_display_by_section()
 {
     local section=$1
     local key=''
@@ -236,7 +231,7 @@ function display_config_by_section()
     eval "values=( \"\${${section}_values[@]}\" )"
 
     for i in "${!keys[@]}"; do
-        orig=$(unescape_string "${values[$i]}")
+        orig=$(ini_unescape_string "${values[$i]}")
         printf '%s=%s\n' "${keys[$i]}" "${orig}"
     done
     printf '\n'
