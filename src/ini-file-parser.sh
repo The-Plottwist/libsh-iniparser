@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 declare case_sensitive_sections
 declare case_sensitive_keys
