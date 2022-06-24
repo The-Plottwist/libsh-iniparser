@@ -16,19 +16,19 @@ local_show_config_errors=true
 
 function setup_global_variables
 {
-    if [[ -n "${case_sensitive_sections}" ]] && [[ "${case_sensitive_sections}" = false || "${case_sensitive_sections}" = true ]]; then
+    if [[ "${case_sensitive_sections}" = false || "${case_sensitive_sections}" = true ]]; then
          local_case_sensitive_sections=$case_sensitive_sections
     fi
 
-    if [[ -n "${case_sensitive_keys}" ]] && [[ "${case_sensitive_keys}" = false || "${case_sensitive_keys}" = true ]]; then
+    if [[ "${case_sensitive_keys}" = false || "${case_sensitive_keys}" = true ]]; then
          local_case_sensitive_keys=$case_sensitive_keys
     fi
 
-    if [[ -n "${show_config_warnings}" ]] && [[ "${show_config_warnings}" = false || "${show_config_warnings}" = true ]]; then
+    if [[ "${show_config_warnings}" = false || "${show_config_warnings}" = true ]]; then
          local_show_config_warnings=$show_config_warnings
     fi
 
-    if [[ -n "${show_config_errors}" ]] && [[ "${show_config_errors}" = false || "${show_config_errors}" = true ]]; then
+    if [[ "${show_config_errors}" = false || "${show_config_errors}" = true ]]; then
          local_show_config_errors=$show_config_errors
     fi
 }
