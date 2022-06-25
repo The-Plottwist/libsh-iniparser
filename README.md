@@ -72,8 +72,9 @@ ini_get_value 'section1' 'key1'
 
 ## License
 
-libsh-iniparser since [59e6753][First_modification] is sublicensed under the LGPL v3. See LICENSE for details.
+libsh-iniparser since 59e6753 is sublicensed under the LGPL v3. See LICENSE for details.
 Copyright (C) <2022> Fatih Yeğin
+  
 Copyright (C) <2009-2021> Wolf Software
 
 ## Caveat
