@@ -18,10 +18,14 @@ Ini-Config file parser for bash.
 
 ## Functions
 
-1. `ini_process_file` - Process an ini/config file.
-2. `ini_get_value` - Print a specific value.
-3. `ini_display` - Display the processed file.
-4. `ini_display_by_section` - Display only a section.
+|Funcitons               |Argument(s)    |Description                                      |
+|---                     |---            |---                                              |
+|`ini_process_file`      |"file"         |Process the specified config file.               |
+|`ini_get_value`         |"section" "key"|Return a value from specified section & key pair.|
+|`ini_display`           |none           |Fully display the processed file.                |
+|`ini_display_keys`      |"section"      |Display the keys of a specified section.         |
+|`ini_display_values`    |"section"      |Display the values of a specified section.       |
+|`ini_display_by_section`|"section"      |Display a specified section.                     |
 
 ## Globals (For Altering The Behaviour)
 
