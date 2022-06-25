@@ -79,7 +79,7 @@ function ini_initialize_variables
 function ini_in_array()
 {
     local haystack="${1}[@]"
-    local needle=${2}
+    local needle="${2}"
 
     if echo "${!haystack}" | grep -q -w "${needle}"; then
         return 0
@@ -91,33 +91,34 @@ function ini_in_array()
 function ini_show_warning()
 {
     if [[ "${INI_IS_SHOW_WARNINGS}" = true ]]; then
-        format=$1
+        format="${1}"
         shift;
 
         #shellcheck disable=SC2059
-        printf "[ WARNING ] ${format}" "$@";
+        printf "[ WARNING ]: ${format}" "$@";
     fi
 }
 
 function ini_show_error()
 {
     if [[ "${INI_IS_SHOW_ERRORS}" = true ]]; then
-        format=$1
+        format="${1}"
         shift;
 
         #shellcheck disable=SC2059
-        printf "[ ERROR ] ${format}" "$@";
+        printf "[ ERROR ]: ${format}" "$@";
     fi
 }
 
 function ini_process_section()
 {
-    local section=$1
+    local section="${1}"
 
-    #https://stackoverflow.com/questions/369758/how-to-trim-whitespace-from-a-bash-variable
-    section="$(printf "${section}" | sed -e 's/^[[:blank:]]//' | sed -e 's/[[:blank:]]*$//')"            #Remove Trailing and leading blanks
-    section=$(printf "${section}" | tr -s '[:punct:] [:blank:]' '_')                                     #Replace all :punct: and :blank: with underscore and squish
-    section=$(printf "${section}" | sed 's/[^a-zA-Z0-9_]//g')                                            #Remove non-alphanumberics (except underscore)
+    #Remove trailing blanks
+    #https://stackoverflow.com/a/3232433/18680316
+    value="$(printf "${section}" | sed -e 's/^[[:blank:]]//g' | sed -e 's/[[:blank:]]*$//g')"
+    section=$(printf "${section}" | tr -s '[:punct:] [:blank:]' '_')                               #Replace all :punct: and :blank: with underscore and squish
+    section=$(printf "${section}" | sed 's/[^a-zA-Z0-9_]//g')                                      #Remove non-alphanumberics (except underscore)
 
     if [[ "${INI_IS_CASE_SENSITIVE_SECTIONS}" = false ]]; then
         section=$(printf "${section}" | tr '[:upper:]' '[:lower:]')     #Lowercase the section name
@@ -127,29 +128,30 @@ function ini_process_section()
 
 function ini_process_key()
 {
-    local key=$1
+    local key="${1}"
 
-    #https://stackoverflow.com/questions/369758/how-to-trim-whitespace-from-a-bash-variable
-    key="$(printf "${key}" | sed -e 's/^[[:blank:]]//' | sed -e 's/[[:blank:]]*$//')"                    #Remove Trailing and leading blanks
-    key=$(printf "${key}" | tr -s '[:punct:] [:blank:]' '_')                                             #Replace all :punct: and :blank: with underscore and squish
-    key=$(printf "${key}" | sed 's/[^a-zA-Z0-9_]//g')                                                    #Remove non-alphanumberics (except underscore)
+    #Remove trailing blanks
+    #https://stackoverflow.com/a/3232433/18680316
+    value="$(printf "${key}" | sed -e 's/^[[:blank:]]//g' | sed -e 's/[[:blank:]]*$//g')"
+    key=$(printf "${key}" | tr -s '[:punct:] [:blank:]' '_')                                       #Replace all :punct: and :blank: with underscore and squish
+    key=$(printf "${key}" | sed 's/[^a-zA-Z0-9_]//g')                                              #Remove non-alphanumberics (except underscore)
 
     if [[ "${INI_IS_CASE_SENSITIVE_KEYS}" = false ]]; then
-        key=$(printf "${key}" | tr '[:upper:]' '[:lower:]')             #Lowercase the section name
+        key=$(printf "${key}" | tr '[:upper:]' '[:lower:]')                                        #Lowercase the section name
     fi
     echo "${key}"
 }
 
 function ini_process_value()
 {
-    local value=$1
+    local value="${1}"
 
-    value="${value%%\;*}"                                                                                #Remove in line right comments
-    value="${value%%\#*}"                                                                                #Remove in line right comments
+    value="${value%%\;*}"                                                                          #Remove in line right comments
+    value="${value%%\#*}"                                                                          #Remove in line right comments
 
-    #https://stackoverflow.com/questions/369758/how-to-trim-whitespace-from-a-bash-variable
-    value="$(printf "${value}" | sed -e 's/^[[:blank:]]//g' | sed -e 's/[[:blank:]]*$//g')"                  #Remove Trailing and leading blanks
-
+    #Remove trailing blanks
+    #https://stackoverflow.com/a/3232433/18680316
+    value="$(printf "${value}" | sed -e 's/^[[:blank:]]//g' | sed -e 's/[[:blank:]]*$//g')"
     value=$(ini_escape_string "$value")
 
     echo "${value}"
@@ -159,7 +161,7 @@ function ini_escape_string()
 {
     local clean
 
-    clean=${1//\'/SINGLE_QUOTE}
+    clean="${1//\'/SINGLE_QUOTE}"
     echo "${clean}"
 }
 
@@ -167,7 +169,7 @@ function ini_unescape_string()
 {
     local orig
 
-    orig=${1//SINGLE_QUOTE/\'}
+    orig="${1//SINGLE_QUOTE/\'}"
     echo "${orig}"
 }
 
@@ -218,7 +220,7 @@ function ini_process_file()
                 eval "${section}_values+=('${value}')"                  #Use eval to add to the values array
             fi
         fi
-    done < "$1"
+    done < "${1}"
 }
 
 function ini_get_value()
@@ -250,7 +252,7 @@ function ini_display()
     local value=''
 
     for s in "${!sections[@]}"; do
-        section=${sections[$s]}
+        section="${sections[$s]}"
 
         printf '[%s]\n' "${section}"
 
@@ -267,7 +269,7 @@ function ini_display()
 
 function ini_display_by_section()
 {
-    local section=$1
+    local section="${1}"
     local key=''
     local value=''
     local keys=''
