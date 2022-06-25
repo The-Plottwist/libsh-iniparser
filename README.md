@@ -84,7 +84,24 @@ ini_get_value 'section1' 'key1'
 
 ## License
 
-libsh-iniparser since 59e6753 is sublicensed under the LGPL v3. See LICENSE for details.
+libsh-iniparser since 59e6753 is **sublicensed** under the LGPL v3. See LICENSE for details.
+  
+A relevant section of the original version's license is below:
+```
+Copyright © `2009-2021` `Wolf Software`
+
+Permission is hereby granted, free of charge, to any person
+obtaining a copy of this software and associated documentation
+files (the “Software”), to deal in the Software without
+restriction, including without limitation the rights to use,
+copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the
+Software is furnished to do so, subject to the following
+conditions:
+
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+```
   
 **Note: I have no affiliation with Wolf Software.**
   
