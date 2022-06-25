@@ -49,8 +49,7 @@
 #                                   DEFAULTS                                   #
 # ---------------------------------------------------------------------------- #
 
-#TODO: Rename defaults.
-INI_DEFAULT_SECTION='default'
+INI_DEFAULT_SECTION='Fallback'
 sections=( "${INI_DEFAULT_SECTION}" )
 
 
