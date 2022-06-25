@@ -119,7 +119,7 @@ function ini_process_section()
 {
     local section="${1}"
 
-    #Remove trailing blanks
+    #Remove leading & trailing blanks
     #https://stackoverflow.com/a/3232433/18680316
     value="$($INI_DEFAULT_PRINTF "${section}" | sed -e 's/^[[:blank:]]//g' | sed -e 's/[[:blank:]]*$//g')"
     section=$($INI_DEFAULT_PRINTF "${section}" | tr -s '[:punct:] [:blank:]' '_')                               #Replace all :punct: and :blank: with underscore and squish
@@ -135,7 +135,7 @@ function ini_process_key()
 {
     local key="${1}"
 
-    #Remove trailing blanks
+    #Remove leading & trailing blanks
     #https://stackoverflow.com/a/3232433/18680316
     value="$($INI_DEFAULT_PRINTF "${key}" | sed -e 's/^[[:blank:]]//g' | sed -e 's/[[:blank:]]*$//g')"
     key=$($INI_DEFAULT_PRINTF "${key}" | tr -s '[:punct:] [:blank:]' '_')                                       #Replace all :punct: and :blank: with underscore and squish
@@ -154,7 +154,7 @@ function ini_process_value()
     value="${value%%\;*}"                                                                          #Remove in line right comments
     value="${value%%\#*}"                                                                          #Remove in line right comments
 
-    #Remove trailing blanks
+    #Remove leading & trailing blanks
     #https://stackoverflow.com/a/3232433/18680316
     value="$($INI_DEFAULT_PRINTF "${value}" | sed -e 's/^[[:blank:]]//g' | sed -e 's/[[:blank:]]*$//g')"
     value=$(ini_escape_string "$value")

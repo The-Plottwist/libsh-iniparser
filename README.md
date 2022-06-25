@@ -41,6 +41,17 @@ There is a complete example available ([parsing-example.sh](demo/parsing-example
   
 * In raw mode, `printf` format controls won't be interpreted.
 
+## Defaults
+
+Other than the above mentioned globals, there are also default variables.
+
+|Defaults             |Value     |Value Changes With|Value Changes to|
+|---                  |---       |---               |---             |
+|`INI_DEFAULT_PRINTF` |"printf"  |`INI_IS_RAW_MODE` |"printf %s"     |
+|`INI_DEFAULT_SECTION`|"Fallback"|-                 |-               |
+  
+*However, changing them may result with undefined behaviour.*
+
 ### With Globals
 
 ```shell
