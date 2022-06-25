@@ -49,6 +49,7 @@
 #                                   DEFAULTS                                   #
 # ---------------------------------------------------------------------------- #
 
+#TODO: Rename defaults.
 INI_DEFAULT_SECTION='default'
 sections=( "${INI_DEFAULT_SECTION}" )
 
@@ -125,6 +126,7 @@ function ini_process_section()
     echo "${section}"
 }
 
+#TODO: Replace "echo -e" with printf
 function ini_process_key()
 {
     local key=$1
@@ -146,6 +148,8 @@ function ini_process_value()
 
     value="${value%%\;*}"                                               #Remove in line right comments
     value="${value%%\#*}"                                               #Remove in line right comments
+
+    #TODO: Remove [:blank:]
     value="${value##*( )}"                                              #Remove leading spaces
     value="${value%%*( )}"                                              #Remove trailing spaces
 
@@ -170,6 +174,7 @@ function ini_unescape_string()
     echo "${orig}"
 }
 
+#TODO: Remove unnecessry globals
 function ini_process_file()
 {
     local line_number=0
@@ -205,7 +210,7 @@ function ini_process_file()
                 ini_show_error 'line %d: No value\n' "${line_number}"
             else
                 if [[ "${section}" == "${INI_DEFAULT_SECTION}" ]]; then
-                    ini_show_warning '%s=%s - Defined on line %s before first section - added to "%s" group\n' "${key}" "${value}" "${line_number}" "${INI_DEFAULT_SECTION}"
+                    ini_show_warning '%s=%s - Defined on line %s before first section - added to "%s" section\n' "${key}" "${value}" "${line_number}" "${INI_DEFAULT_SECTION}"
                 fi
 
                 eval key_array_name="${section}_keys"

@@ -1,7 +1,7 @@
 
 Copyright (C) <2022> Fatih Yeğin
 
-"ini-file-parser.sh", concurrent with the original version's license,
+"libsh-iniparser", concurrent with the original version's license,
 is a modified library, and sublicensed under the terms of the
 GNU LESSER GENERAL PUBLIC LICENSE (LGPL v3).
 
