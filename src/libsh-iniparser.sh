@@ -263,7 +263,8 @@ function ini_display()
             orig=$(ini_unescape_string "${values[$i]}")
             printf '%s=%s\n' "${keys[$i]}" "${orig}"
         done
-    printf '\n'
+        
+        echo ""
     done
 }
 
@@ -284,5 +285,6 @@ function ini_display_by_section()
         orig=$(ini_unescape_string "${values[$i]}")
         printf '%s=%s\n' "${keys[$i]}" "${orig}"
     done
-    printf '\n'
+    
+    echo ""
 }
