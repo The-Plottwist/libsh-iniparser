@@ -250,6 +250,34 @@ function ini_get_value()
     done
 }
 
+function ini_display_keys()
+{
+
+    local section=''
+    local keys=''
+    
+    section=$(ini_process_section "${1}")
+    eval "keys=( \"\${${section}_keys[@]}\" )"
+    
+    for i in "${!keys[@]}"; do
+        echo "${keys[$i]}"
+    done
+}
+
+function ini_display_values()
+{
+
+    local section=''
+    local values=''
+    
+    section=$(ini_process_section "${1}")
+    eval "values=( \"\${${section}_values[@]}\" )"
+    
+    for i in "${!values[@]}"; do
+        ini_unescape_string "${values[$i]}"
+    done
+}
+
 function ini_display()
 {
     local section=''

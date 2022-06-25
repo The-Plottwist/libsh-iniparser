@@ -18,10 +18,29 @@ source "${SCRIPT_PATH}/src/libsh-iniparser.sh"
 
 ini_process_file "${SCRIPT_PATH}/demo/example.conf"
 
+echo ""
+echo "::PROCESSED FILE::"
+
 ini_display
 
+echo ""
+echo "::ENTIRE SECTION::"
+ini_display_by_section "Fallback"
+
+echo "::ONLY KEYS (Additionals)::"
+ini_display_keys "Additionals"
+
+echo ""
+echo "::ONLY VALUES (Additionals)::"
+ini_display_values "Additionals"
+
+echo ""
+echo "::SPECIFIC VALUES::"
+
+printf "Override: "
 ini_get_value "section2" "override"
 echo ""
 
+printf "__Under_scores_: "
 ini_get_value "Cleanup" "__Under_scores_"
 echo ""
