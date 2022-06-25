@@ -25,6 +25,8 @@ Ini-Config file parser for bash.
 
 ## Globals (For Altering The Behaviour)
 
+There is a complete example available ([parsing-example.sh](demo/parsing-example.sh)).
+
 |Globals                         |Type   |Default value|
 |---                             |---    |---          |
 |`INI_IS_CASE_SENSITIVE_SECTIONS`|boolean|true         |
@@ -52,8 +54,6 @@ ini_process_file 'example.conf'
 # Display a specific value from a specific section
 ini_get_value 'section1' 'key1'
 ```
-
-There is a complete example available ([parsing-example.sh](demo/parsing-example.sh)).
 
 ### Without Globals
 
