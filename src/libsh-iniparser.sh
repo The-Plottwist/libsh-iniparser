@@ -116,27 +116,26 @@ function ini_process_section()
 
     section="${section##*( )}"                                          #Remove leading spaces
     section="${section%%*( )}"                                          #Remove trailing spaces
-    section=$(echo -e "${section}" | tr -s '[:punct:] [:blank:]' '_')   #Replace all :punct: and :blank: with underscore and squish
-    section=$(echo -e "${section}" | sed 's/[^a-zA-Z0-9_]//g')          #Remove non-alphanumberics (except underscore)
+    section=$(printf "${section}" | tr -s '[:punct:] [:blank:]' '_')   #Replace all :punct: and :blank: with underscore and squish
+    section=$(printf "${section}" | sed 's/[^a-zA-Z0-9_]//g')          #Remove non-alphanumberics (except underscore)
 
     if [[ "${INI_IS_CASE_SENSITIVE_SECTIONS}" = false ]]; then
-        section=$(echo -e "${section}" | tr '[:upper:]' '[:lower:]')    #Lowercase the section name
+        section=$(printf "${section}" | tr '[:upper:]' '[:lower:]')    #Lowercase the section name
     fi
     echo "${section}"
 }
 
-#TODO: Replace "echo -e" with printf
 function ini_process_key()
 {
     local key=$1
 
     key="${key##*( )}"                                                  #Remove leading spaces
     key="${key%%*( )}"                                                  #Remove trailing spaces
-    key=$(echo -e "${key}" | tr -s '[:punct:] [:blank:]' '_')           #Replace all :punct: and :blank: with underscore and squish
-    key=$(echo -e "${key}" | sed 's/[^a-zA-Z0-9_]//g')                  #Remove non-alphanumberics (except underscore)
+    key=$(printf "${key}" | tr -s '[:punct:] [:blank:]' '_')           #Replace all :punct: and :blank: with underscore and squish
+    key=$(printf "${key}" | sed 's/[^a-zA-Z0-9_]//g')                  #Remove non-alphanumberics (except underscore)
 
     if [[ "${INI_IS_CASE_SENSITIVE_KEYS}" = false ]]; then
-        key=$(echo -e "${key}" | tr '[:upper:]' '[:lower:]')            #Lowercase the section name
+        key=$(printf "${key}" | tr '[:upper:]' '[:lower:]')            #Lowercase the section name
     fi
     echo "${key}"
 }
