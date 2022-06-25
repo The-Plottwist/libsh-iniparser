@@ -33,6 +33,9 @@ There is a complete example available ([parsing-example.sh](demo/parsing-example
 |`INI_IS_CASE_SENSITIVE_KEYS`    |boolean|true         |
 |`INI_IS_SHOW_WARNINGS`          |boolean|true         |
 |`INI_IS_SHOW_ERRORS`            |boolean|true         |
+|`INI_IS_RAW_MODE`               |boolean|false        |
+  
+* In raw mode, `printf` format controls won't be interpreted.
 
 ### With Globals
 

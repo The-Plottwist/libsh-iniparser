@@ -5,6 +5,7 @@
 #INI_IS_CASE_SENSITIVE_KEYS=false
 #INI_IS_SHOW_WARNINGS=false
 #INI_IS_SHOW_ERRORS=false
+#INI_IS_RAW_MODE=true
 
 #Locate the absolute path of the executable with "readlink".
 #Then, omit executable name with "dirname".

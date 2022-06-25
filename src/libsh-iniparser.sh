@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# shellcheck disable=SC2090,SC2089
 
 # ---------------------------------------------------------------------------- #
 #                                  DISCLAIMER                                  #
@@ -33,6 +34,7 @@
 # INI_IS_CASE_SENSITIVE_KEYS
 # INI_IS_SHOW_WARNINGS
 # INI_IS_SHOW_ERRORS
+# INI_IS_RAW_MODE
 
 
 # ---------------------------------------------------------------------------- #
@@ -49,6 +51,7 @@
 #                                   DEFAULTS                                   #
 # ---------------------------------------------------------------------------- #
 
+INI_DEFAULT_PRINTF="printf"
 INI_DEFAULT_SECTION='Fallback'
 sections=( "${INI_DEFAULT_SECTION}" )
 
@@ -74,6 +77,10 @@ function ini_initialize_variables
     if ! [[ "${INI_IS_SHOW_ERRORS}" = false || "${INI_IS_SHOW_ERRORS}" = true ]]; then
         INI_IS_SHOW_ERRORS=true
     fi
+    
+    if [[ "${INI_IS_RAW_MODE}" = true ]]; then
+        INI_DEFAULT_PRINTF='printf %s'
+    fi
 }
 
 function ini_in_array()
@@ -94,7 +101,6 @@ function ini_show_warning()
         format="${1}"
         shift;
 
-        #shellcheck disable=SC2059
         printf "[ WARNING ]: ${format}" "$@";
     fi
 }
@@ -105,7 +111,6 @@ function ini_show_error()
         format="${1}"
         shift;
 
-        #shellcheck disable=SC2059
         printf "[ ERROR ]: ${format}" "$@";
     fi
 }
@@ -116,12 +121,12 @@ function ini_process_section()
 
     #Remove trailing blanks
     #https://stackoverflow.com/a/3232433/18680316
-    value="$(printf "${section}" | sed -e 's/^[[:blank:]]//g' | sed -e 's/[[:blank:]]*$//g')"
-    section=$(printf "${section}" | tr -s '[:punct:] [:blank:]' '_')                               #Replace all :punct: and :blank: with underscore and squish
-    section=$(printf "${section}" | sed 's/[^a-zA-Z0-9_]//g')                                      #Remove non-alphanumberics (except underscore)
+    value="$($INI_DEFAULT_PRINTF "${section}" | sed -e 's/^[[:blank:]]//g' | sed -e 's/[[:blank:]]*$//g')"
+    section=$($INI_DEFAULT_PRINTF "${section}" | tr -s '[:punct:] [:blank:]' '_')                               #Replace all :punct: and :blank: with underscore and squish
+    section=$($INI_DEFAULT_PRINTF "${section}" | sed 's/[^a-zA-Z0-9_]//g')                                      #Remove non-alphanumberics (except underscore)
 
     if [[ "${INI_IS_CASE_SENSITIVE_SECTIONS}" = false ]]; then
-        section=$(printf "${section}" | tr '[:upper:]' '[:lower:]')     #Lowercase the section name
+        section=$($INI_DEFAULT_PRINTF "${section}" | tr '[:upper:]' '[:lower:]')     #Lowercase the section name
     fi
     echo "${section}"
 }
@@ -132,12 +137,12 @@ function ini_process_key()
 
     #Remove trailing blanks
     #https://stackoverflow.com/a/3232433/18680316
-    value="$(printf "${key}" | sed -e 's/^[[:blank:]]//g' | sed -e 's/[[:blank:]]*$//g')"
-    key=$(printf "${key}" | tr -s '[:punct:] [:blank:]' '_')                                       #Replace all :punct: and :blank: with underscore and squish
-    key=$(printf "${key}" | sed 's/[^a-zA-Z0-9_]//g')                                              #Remove non-alphanumberics (except underscore)
+    value="$($INI_DEFAULT_PRINTF "${key}" | sed -e 's/^[[:blank:]]//g' | sed -e 's/[[:blank:]]*$//g')"
+    key=$($INI_DEFAULT_PRINTF "${key}" | tr -s '[:punct:] [:blank:]' '_')                                       #Replace all :punct: and :blank: with underscore and squish
+    key=$($INI_DEFAULT_PRINTF "${key}" | sed 's/[^a-zA-Z0-9_]//g')                                              #Remove non-alphanumberics (except underscore)
 
     if [[ "${INI_IS_CASE_SENSITIVE_KEYS}" = false ]]; then
-        key=$(printf "${key}" | tr '[:upper:]' '[:lower:]')                                        #Lowercase the section name
+        key=$($INI_DEFAULT_PRINTF "${key}" | tr '[:upper:]' '[:lower:]')                                        #Lowercase the section name
     fi
     echo "${key}"
 }
@@ -151,7 +156,7 @@ function ini_process_value()
 
     #Remove trailing blanks
     #https://stackoverflow.com/a/3232433/18680316
-    value="$(printf "${value}" | sed -e 's/^[[:blank:]]//g' | sed -e 's/[[:blank:]]*$//g')"
+    value="$($INI_DEFAULT_PRINTF "${value}" | sed -e 's/^[[:blank:]]//g' | sed -e 's/[[:blank:]]*$//g')"
     value=$(ini_escape_string "$value")
 
     echo "${value}"
