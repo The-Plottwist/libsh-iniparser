@@ -13,10 +13,11 @@
 # Belongs to Fatih Yeğin, and sublicensed under LGPL v3.
 
 # You should have received both licenses with the files.
-# If not, you can find bot licenses at the addresses below:
+# If not, you can find a template for both licenses at the addresses below:
 # https://www.gnu.org/licenses/lgpl-3.0.en.html (LGPL v3)
-# https://github.com/DevelopersToolbox/ini-file-parser/blob/master/LICENSE.md (MIT)
+# https://opensource.org/licenses/MIT (MIT)
 
+# Copyright (C) <2009-2021> Wolf Software
 # Copyright (C) <2022> Fatih Yeğin
 # Mail: mail.fyegin@gmail.com
 
@@ -41,7 +42,7 @@
 # This is a library file.
 # Do not execute this file directly.
 # Rather, include it in your executable script.
-# Ex: source PATH_TO_PARSER/lib-ini-parser.sh
+# Ex: source PATH_TO_PARSER/libsh-iniparser.sh
 
 
 # ---------------------------------------------------------------------------- #

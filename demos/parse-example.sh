@@ -10,7 +10,7 @@
 SCRIPT_PATH="$( dirname -- "$(dirname -- "$(readlink -f -- "$0")")")"
 
 # shellcheck disable=SC1091
-source "${SCRIPT_PATH}/src/lib-ini-parser.sh" #include the library
+source "${SCRIPT_PATH}/src/libsh-iniparser.sh" #include the library
 
 ini_process_file "${SCRIPT_PATH}/demos/complete-example.conf"
 
