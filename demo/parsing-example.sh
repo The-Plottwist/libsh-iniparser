@@ -27,6 +27,14 @@ echo ""
 echo "::ENTIRE SECTION::"
 ini_display_by_section "Fallback"
 
+echo "::ONLY KEYS (Additionals)::"
+ini_display_keys "Additionals"
+
+echo ""
+echo "::ONLY VALUES (Additionals)::"
+ini_display_values "Additionals"
+
+echo ""
 echo "::SPECIFIC VALUES::"
 
 printf "Override: "
