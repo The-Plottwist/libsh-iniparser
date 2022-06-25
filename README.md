@@ -8,12 +8,12 @@ Ini-Config file parser for bash.
 2. Lines starting with `#` or `;` will be ignored.
 3. Empty lines will be ignored.
 4. Values with no keys will be ignored.
-5. At the beginning of the config file, keys with unspecified sections will automatically be added to the `default` section.
+5. At the beginning of the config file, keys with unspecified sections will automatically be added to the `Fallback` section.
 6. Sections & keys can only contain alpha-numeric characters and underscores.
 7. Sections & keys are case sensitive (by default).
-8. Leading/trailing spaces will be removed.
-9. In key/section punctuation characters (`.`, `:` etc.) will be converted to underscores `_` internally (so `foo.bar` will be identical to `foo_bar`).
-10. In key/section multiple underscores will be removed internally (e.g. `__some_key__` to `_some_key_`).
+8. Leading/trailing blanks will be removed.
+9. Punctuation characters inside keys/sections will be converted to underscores `_` internally (so `foo.bar` will be identical to `foo_bar`).
+10. Multiple underscores inside keys/sections will be removed internally (e.g. `__some_key__` to `_some_key_`).
 11. Comments inside values will be removed.
 
 ## Functions
@@ -73,6 +73,11 @@ ini_process_file 'example.conf'
 ini_get_value 'section1' 'key1'
 ```
 
+## Caveats
+
+1. Two arrays per section will be generated. One for keys and one for values.
+2. For a more secure approach, `#!/bin/bash` is used as SheBang. If this causes problems, please run `which bash` and change the SheBang accordingly.
+
 ## License
 
 libsh-iniparser since 59e6753 is sublicensed under the LGPL v3. See LICENSE for details.
@@ -82,7 +87,3 @@ libsh-iniparser since 59e6753 is sublicensed under the LGPL v3. See LICENSE for 
 Copyright (C) <2022> Fatih Yeğin
   
 Copyright (C) <2009-2021> Wolf Software
-
-## Caveat
-
-Two arrays per section will be generated. One for keys and one for values.
