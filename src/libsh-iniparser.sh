@@ -173,7 +173,6 @@ function ini_unescape_string()
     echo "${orig}"
 }
 
-#TODO: Remove unnecessry globals
 function ini_process_file()
 {
     local line_number=0
@@ -219,7 +218,6 @@ function ini_process_file()
                 fi
                 eval "${section}_keys+=(${key})"                        #Use eval to add to the keys array
                 eval "${section}_values+=('${value}')"                  #Use eval to add to the values array
-                eval "${section}_${key}='${value}'"                     #Use eval to declare a variable
             fi
         fi
     done < "$1"
