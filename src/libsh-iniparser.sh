@@ -25,8 +25,8 @@
 # ---------------------------------------------------------------------------- #
 #                                CONFIGURATION                                 #
 # ---------------------------------------------------------------------------- #
-# To change the behaviour, uncomment & set below variables
-# accordingly in your executable.
+# To alter the behaviour,
+# set below variables to "false" in your executable.
 # Note: They are assumed "true" by default.
 
 # INI_IS_CASE_SENSITIVE_SECTIONS
@@ -42,7 +42,7 @@
 # This is a library file.
 # Do not execute this file directly.
 # Rather, include it in your executable script.
-# Ex: source PATH_TO_PARSER/libsh-iniparser.sh
+# Ex: source PATH_TO_LIBRARY/libsh-iniparser.sh
 
 
 # ---------------------------------------------------------------------------- #

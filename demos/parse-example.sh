@@ -1,11 +1,10 @@
 #!/bin/bash
 
-# All globals assumed true by default.
-# You can find them below:
-# INI_IS_CASE_SENSITIVE_SECTIONS
-# INI_IS_CASE_SENSITIVE_KEYS
-# INI_IS_SHOW_WARNINGS
-# INI_IS_SHOW_ERRORS
+# To alter behaviour, uncomment the variables below:
+#INI_IS_CASE_SENSITIVE_SECTIONS=false
+#INI_IS_CASE_SENSITIVE_KEYS=false
+#INI_IS_SHOW_WARNINGS=false
+#INI_IS_SHOW_ERRORS=false
 
 SCRIPT_PATH="$( dirname -- "$(dirname -- "$(readlink -f -- "$0")")")"
 
@@ -28,5 +27,3 @@ echo "${value}"
 echo ""
 echo "Display Section 1 - Value 1 (Named variable):"
 echo "${section1_value1}"
-
-
