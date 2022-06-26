@@ -215,16 +215,21 @@ function ini_process_file()
                 ini_show_error 'line %d: No value\n' "${line_number}"
             else
                 if [[ "${section}" == "${INI_DEFAULT_SECTION}" ]]; then
-                    ini_show_warning '%s=%s - Defined on line %s before first section - added to "%s" section\n' "${key}" "${value}" "${line_number}" "${INI_DEFAULT_SECTION}"
+                    ini_show_warning 'On line %s, no section was identified. "%s=%s" is added to [%s]\n' "${line_number}" "${key}" "${value}" "${INI_DEFAULT_SECTION}"
                 fi
 
                 eval key_array_name="${section}_keys"
 
                 if ini_in_array "${key_array_name}" "${key}"; then
-                    ini_show_warning 'key %s - Defined multiple times within section %s\n' "${key}" "${section}"
+                    ini_show_warning 'The key "%s" in [%s] was defined before. Overriding!\n' "${key}" "${section}"
+                    
+                    local -i index=''
+                    index="$(ini_display_keys "${section}" "true" | awk '{print $1}')"
+                    eval "${section}_values[${index}]='${value}'"
+                else
+                    eval "${section}_keys+=(${key})"                        #Use eval to add to the keys array
+                    eval "${section}_values+=('${value}')"                  #Use eval to add to the values array
                 fi
-                eval "${section}_keys+=(${key})"                        #Use eval to add to the keys array
-                eval "${section}_values+=('${value}')"                  #Use eval to add to the values array
             fi
         fi
     done < "${1}"
@@ -257,13 +262,20 @@ function ini_display_keys()
 
     local section=''
     local keys=''
+    local is_print_index="${2:-false}"
     
     section=$(ini_process_section "${1}")
     eval "keys=( \"\${${section}_keys[@]}\" )"
     
-    for i in "${!keys[@]}"; do
-        echo "${keys[$i]}"
-    done
+    if [[ "$is_print_index" == "true" ]]; then
+        for i in "${!keys[@]}"; do
+            echo "${i}" "${keys[$i]}"
+        done
+    else
+        for i in "${keys[@]}"; do
+            echo "${i}"
+        done
+    fi
 }
 
 function ini_display_values()
@@ -271,13 +283,20 @@ function ini_display_values()
 
     local section=''
     local values=''
+    local is_print_index="${2:-false}"
     
     section=$(ini_process_section "${1}")
     eval "values=( \"\${${section}_values[@]}\" )"
     
-    for i in "${!values[@]}"; do
-        ini_unescape_string "${values[$i]}"
-    done
+    if [[ "$is_print_index" = true ]]; then
+        for i in "${!values[@]}"; do
+            echo "${i}" "${values[$i]}"
+        done
+    else
+        for i in "${values[@]}"; do
+            ini_unescape_string "${i}"
+        done
+    fi
 }
 
 function ini_display()
