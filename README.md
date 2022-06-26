@@ -18,14 +18,14 @@ Ini-Config file parser for bash.
 
 ## Functions
 
-|Funcitons               |Argument(s)    |Description                                      |
-|---                     |---            |---                                              |
-|`ini_process_file`      |"file"         |Process the specified config file.               |
-|`ini_get_value`         |"section" "key"|Return a value from specified section & key pair.|
-|`ini_display`           |none           |Fully display the processed file.                |
-|`ini_display_keys`      |"section"      |Display the keys of a specified section.         |
-|`ini_display_values`    |"section"      |Display the values of a specified section.       |
-|`ini_display_by_section`|"section"      |Display a specified section.                     |
+|Funcitons               |Argument(s)    |Optional argument(s)|Description                                                       |
+|---                     |---            |---                 |---                                                               |
+|`ini_process_file`      |"file"         |-                   |Process the specified config file.                                |
+|`ini_get_value`         |"section" "key"|-                   |Return a value from specified section & key pair.                 |
+|`ini_display`           |none           |-                   |Fully display the processed file.                                 |
+|`ini_display_keys`      |"section"      |"boolean"           |Display the keys with or without indexes of a specified section.  |
+|`ini_display_values`    |"section"      |"boolean"           |Display the values with or without indexes of a specified section.|
+|`ini_display_by_section`|"section"      |-                   |Display a specified section.                                      |
 
 ## Globals (For Altering The Behaviour)
 
@@ -95,7 +95,8 @@ ini_get_value 'section1' 'key1'
 ## Caveats
 
 1. Two arrays per section will be generated. One for keys and one for values.
-2. For a more secure approach, `#!/bin/bash` is used as SheBang. If this causes problems, please run `which bash` and change the SheBang accordingly.
+2. Both of these arrays are assumed to be the same length. Any loss of synchronization will cause failure.
+3. For a more secure approach, `#!/bin/bash` is used as SheBang. If this causes problems, please run `which bash` and change the SheBang accordingly.
 
 ## License
 

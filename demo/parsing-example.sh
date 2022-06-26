@@ -37,10 +37,10 @@ ini_display_values "Additionals"
 echo ""
 echo "::SPECIFIC VALUES::"
 
-printf "Override: "
+printf "Override:"
 ini_get_value "section2" "override"
 echo ""
 
-printf "__Under_scores_: "
+printf "__Under_scores_:"
 ini_get_value "Cleanup" "__Under_scores_"
 echo ""
