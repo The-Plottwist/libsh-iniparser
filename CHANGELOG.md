@@ -1,3 +1,10 @@
+## v2.4 (2022-06-26)
+
+* Updated VERSION (7608427)
+* Added checks for asynchronism. (53824d8)
+* Updated CHANGELOG.md (a09f03c)
+
+
 ## v2.3 (2022-06-26)
 
 * Updated version number. (3e02c78)
