@@ -45,12 +45,16 @@ There is a complete example available ([parsing-example.sh](demo/parsing-example
 
 Other than the above mentioned globals, there are also default variables.
 
-|Defaults             |Value     |Value Changes With|Value Changes to|
-|---                  |---       |---               |---             |
-|`INI_DEFAULT_PRINTF` |"printf"  |`INI_IS_RAW_MODE` |"printf %s"     |
-|`INI_DEFAULT_SECTION`|"Fallback"|-                 |-               |
+|Defaults             |Type     |Value     |Value Changes With|Value Changes to|
+|---                  |---      |---       |---               |---             |
+|`INI_DEFAULT_PRINTF` |**\*Hardcoded**|"printf"  |`INI_IS_RAW_MODE` |"printf %s"     |
+|`INI_DEFAULT_SECTION`|**\*Hardcoded**|"Fallback"|-                 |-               |
   
 *However, changing them may result with undefined behaviour.*
+  
+*(\* Hardcoded: To change the value, one should modify the library.)*
+
+## Examples
 
 ### With Globals
 

@@ -51,7 +51,7 @@
 #                                   DEFAULTS                                   #
 # ---------------------------------------------------------------------------- #
 
-INI_DEFAULT_PRINTF="printf"
+INI_DEFAULT_PRINTF='printf' #Will also be modified from ini_initialize_variables()
 INI_DEFAULT_SECTION='Fallback'
 sections=( "${INI_DEFAULT_SECTION}" )
 
@@ -80,6 +80,8 @@ function ini_initialize_variables
     
     if [[ "${INI_IS_RAW_MODE}" = true ]]; then
         INI_DEFAULT_PRINTF='printf %s'
+    else
+        INI_DEFAULT_PRINTF='printf'
     fi
 }
 
