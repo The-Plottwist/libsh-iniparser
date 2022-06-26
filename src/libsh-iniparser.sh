@@ -97,10 +97,18 @@ function ini_in_array()
     return 1
 }
 
+function ini_show_fatal()
+{
+
+    local format="${1}"
+    shift;
+    printf "[ FATAL ]: ${format}" "$@";
+}
+
 function ini_show_warning()
 {
     if [[ "${INI_IS_SHOW_WARNINGS}" = true ]]; then
-        format="${1}"
+        local format="${1}"
         shift;
 
         printf "[ WARNING ]: ${format}" "$@";
@@ -110,7 +118,7 @@ function ini_show_warning()
 function ini_show_error()
 {
     if [[ "${INI_IS_SHOW_ERRORS}" = true ]]; then
-        format="${1}"
+        local format="${1}"
         shift;
 
         printf "[ ERROR ]: ${format}" "$@";
@@ -205,7 +213,7 @@ function ini_process_file()
                 eval "${section}_values=()"                             #Use eval to declare the values array
                 sections+=("${section}")                                #Add the section name to the list
             fi
-        elif [[ $line =~ ^(.*)"="(.*) ]]; then                          #Match patter for a key=value pair
+        elif [[ $line =~ ^(.*)"="(.*) ]]; then                          #Match pattern for a key=value pair
             key=$(ini_process_key "${BASH_REMATCH[1]}")
             value=$(ini_process_value "${BASH_REMATCH[2]}")
 
@@ -248,6 +256,12 @@ function ini_get_value()
 
     eval "keys=( \"\${${section}_keys[@]}\" )"
     eval "values=( \"\${${section}_values[@]}\" )"
+    
+    #Check for asyncronism
+    if [[ "${#keys[@]}" != "${#values[@]}" ]]; then
+        ini_show_fatal 'Values and keys in [%s] are asynchronous. Process aborted!\n' "${section}"
+        return 55
+    fi
 
     for i in "${!keys[@]}"; do
         if [[ "${keys[$i]}" = "${key}" ]]; then
@@ -312,6 +326,12 @@ function ini_display()
 
         eval "keys=( \"\${${section}_keys[@]}\" )"
         eval "values=( \"\${${section}_values[@]}\" )"
+        
+        #Check for asyncronism
+        if [[ "${#keys[@]}" != "${#values[@]}" ]]; then
+            ini_show_fatal 'Values and keys in [%s] are asynchronous. Process aborted!\n' "${section}"
+            return 55
+        fi
 
         for i in "${!keys[@]}"; do
             orig=$(ini_unescape_string "${values[$i]}")
@@ -334,6 +354,12 @@ function ini_display_by_section()
 
     eval "keys=( \"\${${section}_keys[@]}\" )"
     eval "values=( \"\${${section}_values[@]}\" )"
+    
+    #Check for asyncronism
+    if [[ "${#keys[@]}" != "${#values[@]}" ]]; then
+        ini_show_fatal 'Values and keys in [%s] are asynchronous. Process aborted!\n' "${section}"
+        return 55
+    fi
 
     for i in "${!keys[@]}"; do
         orig=$(ini_unescape_string "${values[$i]}")

@@ -44,3 +44,9 @@ echo ""
 printf "__Under_scores_:"
 ini_get_value "Cleanup" "__Under_scores_"
 echo ""
+
+echo ""
+echo ::FATALITY CHECK::
+eval "Fallback_keys+=('asd')"
+ini_display
+ini_display_by_section "Fallback"

@@ -95,7 +95,7 @@ ini_get_value 'section1' 'key1'
 ## Caveats
 
 1. Two arrays per section will be generated. One for keys and one for values.
-2. Both of these arrays are assumed to be the same length. Any loss of synchronization will cause failure.
+2. Both of these arrays are assumed to be the same length. Any loss of synchronization will cause fatal failure.
 3. For a more secure approach, `#!/bin/bash` is used as SheBang. If this causes problems, please run `which bash` and change the SheBang accordingly.
 
 ## License
