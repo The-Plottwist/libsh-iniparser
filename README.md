@@ -23,8 +23,8 @@ Ini-Config file parser for bash.
 |`ini_process_file`      |"file"         |-                   |Process the specified config file.                                |
 |`ini_get_value`         |"section" "key"|-                   |Return a value from specified section & key pair.                 |
 |`ini_display`           |none           |-                   |Fully display the processed file.                                 |
-|`ini_display_keys`      |"section"      |"boolean"           |Display the keys with or without indexes of a specified section.  |
-|`ini_display_values`    |"section"      |"boolean"           |Display the values with or without indexes of a specified section.|
+|`ini_print_keys`      |"section"      |"boolean"           |Display the keys with or without indexes of a specified section.  |
+|`ini_print_values`    |"section"      |"boolean"           |Display the values with or without indexes of a specified section.|
 |`ini_display_by_section`|"section"      |-                   |Display a specified section.                                      |
 
 ## Globals (For Altering The Behaviour)
@@ -33,11 +33,11 @@ There is a complete example available ([parsing-example.sh](demo/parsing-example
 
 |Globals                         |Type   |Default value|
 |---                             |---    |---          |
-|`INI_IS_CASE_SENSITIVE_SECTIONS`|boolean|true         |
-|`INI_IS_CASE_SENSITIVE_KEYS`    |boolean|true         |
-|`INI_IS_SHOW_WARNINGS`          |boolean|true         |
-|`INI_IS_SHOW_ERRORS`            |boolean|true         |
-|`INI_IS_RAW_MODE`               |boolean|false        |
+|`INI_CASE_SENSITIVE_SECTIONS`|boolean|true         |
+|`INI_CASE_SENSITIVE_KEYS`    |boolean|true         |
+|`INI_SHOW_WARNINGS`          |boolean|true         |
+|`INI_SHOW_ERRORS`            |boolean|true         |
+|`INI_RAW_MODE`               |boolean|false        |
   
 * In raw mode, `printf` format controls won't be interpreted.
 
@@ -47,7 +47,7 @@ Other than the above mentioned globals, there are also default variables.
 
 |Defaults             |Type     |Value     |Value Changes With|Value Changes to|
 |---                  |---      |---       |---               |---             |
-|`INI_DEFAULT_PRINTF` |**\*Hardcoded**|"printf"  |`INI_IS_RAW_MODE` |"printf %s"     |
+|`INI_DEFAULT_PRINTF` |**\*Hardcoded**|"printf"  |`INI_RAW_MODE` |"printf %s"     |
 |`INI_DEFAULT_SECTION`|**\*Hardcoded**|"Fallback"|-                 |-               |
   
 *However, changing them may result with undefined behaviour.*
@@ -62,10 +62,10 @@ Other than the above mentioned globals, there are also default variables.
 #!/bin/bash
 
 # Turn off warnings
-INI_IS_SHOW_WARNINGS=false
+INI_SHOW_WARNINGS=false
 
 # Case insensitive section names
-INI_IS_CASE_SENSITIVE_KEYS=false
+INI_CASE_SENSITIVE_KEYS=false
 
 # Load the parser
 source libsh-iniparser.sh

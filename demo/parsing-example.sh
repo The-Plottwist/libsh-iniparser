@@ -1,11 +1,11 @@
 #!/bin/bash
 
 # To alter behaviour, uncomment the variables below:
-#INI_IS_CASE_SENSITIVE_SECTIONS=false
-#INI_IS_CASE_SENSITIVE_KEYS=false
-#INI_IS_SHOW_WARNINGS=false
-#INI_IS_SHOW_ERRORS=false
-#INI_IS_RAW_MODE=true
+#INI_CASE_SENSITIVE_SECTIONS=false
+#INI_CASE_SENSITIVE_KEYS=false
+#INI_SHOW_WARNINGS=false
+#INI_SHOW_ERRORS=false
+#INI_RAW_MODE=true
 
 #Locate the absolute path of the executable with "readlink".
 #Then, omit executable name with "dirname".
@@ -28,11 +28,11 @@ echo "::ENTIRE SECTION::"
 ini_display_by_section "Fallback"
 
 echo "::ONLY KEYS (Additionals)::"
-ini_display_keys "Additionals"
+ini_print_keys "Additionals"
 
 echo ""
 echo "::ONLY VALUES (Additionals)::"
-ini_display_values "Additionals"
+ini_print_values "Additionals"
 
 echo ""
 echo "::SPECIFIC VALUES::"

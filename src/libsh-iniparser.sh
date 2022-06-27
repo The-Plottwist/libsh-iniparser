@@ -30,11 +30,11 @@
 # set below variables to "false" in your executable.
 # Note: They are assumed "true" by default.
 
-# INI_IS_CASE_SENSITIVE_SECTIONS
-# INI_IS_CASE_SENSITIVE_KEYS
-# INI_IS_SHOW_WARNINGS
-# INI_IS_SHOW_ERRORS
-# INI_IS_RAW_MODE
+# INI_CASE_SENSITIVE_SECTIONS
+# INI_CASE_SENSITIVE_KEYS
+# INI_SHOW_WARNINGS
+# INI_SHOW_ERRORS
+# INI_RAW_MODE
 
 
 # ---------------------------------------------------------------------------- #
@@ -62,23 +62,23 @@ sections=( "${INI_DEFAULT_SECTION}" )
 
 function ini_initialize_variables
 {
-    if ! [[ "${INI_IS_CASE_SENSITIVE_SECTIONS}" = false || "${INI_IS_CASE_SENSITIVE_SECTIONS}" = true ]]; then
-        INI_IS_CASE_SENSITIVE_SECTIONS=true
+    if ! [[ "${INI_CASE_SENSITIVE_SECTIONS}" = false || "${INI_CASE_SENSITIVE_SECTIONS}" = true ]]; then
+        INI_CASE_SENSITIVE_SECTIONS=true
     fi
 
-    if ! [[ "${INI_IS_CASE_SENSITIVE_KEYS}" = false || "${INI_IS_CASE_SENSITIVE_KEYS}" = true ]]; then
-        INI_IS_CASE_SENSITIVE_KEYS=true
+    if ! [[ "${INI_CASE_SENSITIVE_KEYS}" = false || "${INI_CASE_SENSITIVE_KEYS}" = true ]]; then
+        INI_CASE_SENSITIVE_KEYS=true
     fi
 
-    if ! [[ "${INI_IS_SHOW_WARNINGS}" = false || "${INI_IS_SHOW_WARNINGS}" = true ]]; then
-        INI_IS_SHOW_WARNINGS=true
+    if ! [[ "${INI_SHOW_WARNINGS}" = false || "${INI_SHOW_WARNINGS}" = true ]]; then
+        INI_SHOW_WARNINGS=true
     fi
 
-    if ! [[ "${INI_IS_SHOW_ERRORS}" = false || "${INI_IS_SHOW_ERRORS}" = true ]]; then
-        INI_IS_SHOW_ERRORS=true
+    if ! [[ "${INI_SHOW_ERRORS}" = false || "${INI_SHOW_ERRORS}" = true ]]; then
+        INI_SHOW_ERRORS=true
     fi
     
-    if [[ "${INI_IS_RAW_MODE}" = true ]]; then
+    if [[ "${INI_RAW_MODE}" = true ]]; then
         INI_DEFAULT_PRINTF='printf %s'
     else
         INI_DEFAULT_PRINTF='printf'
@@ -107,7 +107,7 @@ function ini_show_fatal()
 
 function ini_show_warning()
 {
-    if [[ "${INI_IS_SHOW_WARNINGS}" = true ]]; then
+    if [[ "${INI_SHOW_WARNINGS}" = true ]]; then
         local format="${1}"
         shift;
 
@@ -117,7 +117,7 @@ function ini_show_warning()
 
 function ini_show_error()
 {
-    if [[ "${INI_IS_SHOW_ERRORS}" = true ]]; then
+    if [[ "${INI_SHOW_ERRORS}" = true ]]; then
         local format="${1}"
         shift;
 
@@ -135,7 +135,7 @@ function ini_process_section()
     section=$($INI_DEFAULT_PRINTF "${section}" | tr -s '[:punct:] [:blank:]' '_')                               #Replace all :punct: and :blank: with underscore and squish
     section=$($INI_DEFAULT_PRINTF "${section}" | sed 's/[^a-zA-Z0-9_]//g')                                      #Remove non-alphanumberics (except underscore)
 
-    if [[ "${INI_IS_CASE_SENSITIVE_SECTIONS}" = false ]]; then
+    if [[ "${INI_CASE_SENSITIVE_SECTIONS}" = false ]]; then
         section=$($INI_DEFAULT_PRINTF "${section}" | tr '[:upper:]' '[:lower:]')     #Lowercase the section name
     fi
     echo "${section}"
@@ -151,7 +151,7 @@ function ini_process_key()
     key=$($INI_DEFAULT_PRINTF "${key}" | tr -s '[:punct:] [:blank:]' '_')                                       #Replace all :punct: and :blank: with underscore and squish
     key=$($INI_DEFAULT_PRINTF "${key}" | sed 's/[^a-zA-Z0-9_]//g')                                              #Remove non-alphanumberics (except underscore)
 
-    if [[ "${INI_IS_CASE_SENSITIVE_KEYS}" = false ]]; then
+    if [[ "${INI_CASE_SENSITIVE_KEYS}" = false ]]; then
         key=$($INI_DEFAULT_PRINTF "${key}" | tr '[:upper:]' '[:lower:]')                                        #Lowercase the section name
     fi
     echo "${key}"
@@ -232,7 +232,7 @@ function ini_process_file()
                     ini_show_warning 'The key "%s" in [%s] was defined before. Overriding!\n' "${key}" "${section}"
                     
                     local -i index=''
-                    index="$(ini_display_keys "${section}" "true" | awk '{print $1}')"
+                    index="$(ini_print_keys "${section}" "true" | awk '{print $1}')"
                     eval "${section}_values[${index}]='${value}'"
                 else
                     eval "${section}_keys+=(${key})"                        #Use eval to add to the keys array
@@ -271,7 +271,7 @@ function ini_get_value()
     done
 }
 
-function ini_display_keys()
+function ini_print_keys()
 {
 
     local section=''
@@ -292,7 +292,7 @@ function ini_display_keys()
     fi
 }
 
-function ini_display_values()
+function ini_print_values()
 {
 
     local section=''
