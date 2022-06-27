@@ -231,9 +231,25 @@ function ini_process_file()
                 if ini_in_array "${key_array_name}" "${key}"; then
                     ini_show_warning 'The key "%s" in [%s] was defined before. Overriding!\n' "${key}" "${section}"
                     
-                    local -i index=''
-                    index="$(ini_print_keys "${section}" "true" | awk '{print $1}')"
-                    eval "${section}_values[${index}]='${value}'"
+                    #For this loop to work, we need to change IFS to newlines
+                    #otherwise, it will make a new iteration on every space encounter ;)
+                    OLD_IFS="$IFS"
+                    IFS=$'\n'
+                    { #Optional curly braces for readability. Has no effect!
+                        local cur_key=''
+                        local -i index=''
+                        for key_iterator in $(ini_print_keys "${section}" "true"); do
+                        
+                            cur_key="$(echo $key_iterator | awk '{print $2}')" #Get current key
+                            if [[ "$cur_key" == "$key" ]]; then
+                        
+                                index="$(echo $key_iterator | awk '{print $1}')" #Get current key index
+                                eval "${section}_values[${index}]='${value}'" #Perform override
+                                break
+                            fi
+                        done
+                    }
+                    IFS="$OLD_IFS" #Restore old IFS
                 else
                     eval "${section}_keys+=(${key})"                        #Use eval to add to the keys array
                     eval "${section}_values+=('${value}')"                  #Use eval to add to the values array
