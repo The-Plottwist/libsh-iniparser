@@ -1,3 +1,9 @@
+## v3.2 (2022-06-27)
+
+* Override mechanism fixed (thoroughly this time). (c05ad4c)
+* Updated CHANGELOG.md (dad4594)
+
+
 ## v3.0 (2022-06-27)
 
 * Updated version number to 3.0 (37e212c)
