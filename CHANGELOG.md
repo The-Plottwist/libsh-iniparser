@@ -1,3 +1,11 @@
+## v3.0 (2022-06-27)
+
+* Updated version number to 3.0 (37e212c)
+* Updated README.md (abbcbb3)
+* Bulk renaming done (8f84a00)
+* Updated CHANGELOG.md (7289060)
+
+
 ## v2.4 (2022-06-26)
 
 * Updated VERSION (7608427)
