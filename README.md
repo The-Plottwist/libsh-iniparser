@@ -39,7 +39,7 @@ There is a complete example available ([parsing-example.sh](demo/parsing-example
 |`INI_SHOW_ERRORS`            |boolean|true         |
 |`INI_RAW_MODE`               |boolean|false        |
   
-* In raw mode, `printf` format controls won't be interpreted.
+* In raw mode, all values will be interpreted as plain text. This means, there will be no variable expansions. (e.g. `$HOME` will be `$HOME` or `\t` would still be `\t` etc.)
 
 ## Defaults
 
