@@ -27,8 +27,9 @@
 #                                CONFIGURATION                                 #
 # ---------------------------------------------------------------------------- #
 # To alter the behaviour,
-# set below variables to "false" in your executable.
-# Note: They are assumed "true" by default.
+# set below variables to "true" or "false"
+# in your executable script.
+# Defaults can be found in README.
 
 # INI_CASE_SENSITIVE_SECTIONS
 # INI_CASE_SENSITIVE_KEYS
