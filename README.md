@@ -21,7 +21,7 @@ Ini-Config file parser for bash.
 |Funcitons               |Argument(s)    |Optional argument(s)|Description                                                       |
 |---                     |---            |---                 |---                                                               |
 |`ini_process_file`      |"file"         |-                   |Process the specified config file.                                |
-|`ini_get_value`         |"section" "key"|-                   |Return a value from specified section & key pair.                 |
+|`ini_get_value`         |"section", "key"|-                   |Return a value from specified section & key pair.                 |
 |`ini_display`           |none           |-                   |Fully display the processed file.                                 |
 |`ini_print_keys`      |"section"      |"boolean"           |Display the keys with or without indexes of a specified section.  |
 |`ini_print_values`    |"section"      |"boolean"           |Display the values with or without indexes of a specified section.|
